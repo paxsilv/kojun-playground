@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Kojun Playground</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="examples-card card">
+            <h1>Kojun Programming Language</h1>
+            <div class="placeholder">Kojun is an experimental, dynamically typed scripting language that I built as a
+                learning project. The interpreter is written in Python and largely based on the jlox
+                implementation from the book <a href="https://craftinginterpreters.com/">Crafting Interpreters</a>.
+                Try running the examples below or write your own code in the editor.
+            </div>
+            <div class="snippet">
+                <pre>let config_found = true;
+
+if (config_found:
+    display("Configuration loaded.");
+) else (:
+    display("Configuration file missing.");
+)
+</pre>
+                <button class="edit-btn" onclick="editSnippet(this)">Edit</button>
+            </div>
+            <div class="snippet">
+                <pre>var i = 0;
+
+while (i < 10:
+    display(i);
+    newline();
+    i += 1;
+)
+</pre>
+                <button class="edit-btn" onclick="editSnippet(this)">Edit</button>
+            </div>
+            <div class="snippet">
+                <pre>fun square(x:
+    return x * x;
+)
+
+fun map(fn, items:
+    let N = length(items);
+    let new_array = array(nil, N);
+
+    var i = 0;
+    while (i < N:
+        new_array[i] = fn(items[i]);
+        i += 1;
+    )
+
+    return new_array;
+)
+
+display(map(square, [2, 3, 4, 5, 6, 7]));
+</pre>
+                <button class="edit-btn" onclick="editSnippet(this)">Edit</button>
+            </div>
+        </div>
+        <div class="editor-card card">
+            <div id="editor"></div>
+            <button onclick="run()">Run</button>
+            <div class="output-card">
+                <pre id="output"></pre>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    <script src="main.js"></script>
+    <script>
+        function editSnippet(btn) {
+            const code = btn.parentElement.textContent.replace('Edit', '').trim();
+            if (window.monacoEditor) {
+                window.monacoEditor.setValue(code);
+            }
+        }
+    </script>
+    <script type="module">
+        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/+esm";
+        window.monacoEditor = monaco.editor.create(document.getElementById("editor"), {
+            value: 'display("Hello, World!");\nnewline();\n',
+            minimap: { enabled: false }
+        });
+    </script>
+</body>
+
+</html>
